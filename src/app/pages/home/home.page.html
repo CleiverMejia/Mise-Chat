@@ -1,0 +1,39 @@
+<app-header>
+  <ion-avatar
+    profile
+    slot="end"
+    class="ion-padding"
+    [routerLink]="['/profile']"
+  >
+    <img *ngIf="currentUser"
+      [src]="currentUser.imageUrl"
+      [alt]="currentUser.name"
+      />
+  </ion-avatar>
+</app-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    @for (contact of contacts; track $index) {
+      <app-chat-item
+        [cid]="contact.cid ?? ''"
+        [url]="contact.url ?? ''"
+        [nickname]="contact.nickname"
+      />
+    }
+  </ion-list>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button>
+      <ion-icon name="chevron-up-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button [routerLink]="['/add-contact']">
+        <ion-icon name="person-add-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="logout()" [routerLink]="['/login']">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+</ion-content>

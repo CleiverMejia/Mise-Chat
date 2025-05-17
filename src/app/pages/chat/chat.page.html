@@ -1,0 +1,91 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-icon
+      slot="start"
+      name="chevron-back"
+      class="ion-padding-start"
+      [routerLink]="['/home']"
+    ></ion-icon>
+
+    <ion-title class="ion-text-center">
+      <ion-icon name="person-circle-outline"></ion-icon>
+      Chat
+    </ion-title>
+
+    <ion-icon slot="end" name="call-outline" class="ion-padding-end"></ion-icon>
+
+    <ion-icon
+      slot="end"
+      name="ellipsis-vertical-outline"
+      class="ion-padding-end"
+    ></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" #ioncontent [scrollEvents]="true">
+  <ion-list [inset]="false" lines="none">
+    @for (message of messages; track $index) {
+    <app-message-item
+      [cid]="chatId"
+      [uid]="message.uid"
+      [message]="message.content"
+      [date]="message.date"
+    ></app-message-item>
+    }
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-icon
+      name="add-outline"
+      slot="start"
+      id="file-menu"
+      class="ion-padding-start ion-padding-end"
+    ></ion-icon>
+    <ion-popover trigger="file-menu" triggerAction="click">
+      <ng-template>
+        <ion-content class="ion-padding">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="6">
+                <ion-icon name="image-outline"></ion-icon>
+                <ion-label>Image</ion-label>
+              </ion-col>
+              <ion-col size="6">
+                <ion-icon name="videocam-outline"></ion-icon>
+                <ion-label>Video</ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                <ion-icon name="document-text-outline"></ion-icon>
+                <ion-label>Document</ion-label>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-content>
+      </ng-template>
+    </ion-popover>
+
+    <ion-textarea
+      type="text"
+      placeholder="Type a message"
+      class=""
+      [(ngModel)]="content"
+    >
+    </ion-textarea>
+
+    <ion-icon
+      name="mic-outline"
+      slot="end"
+      class="ion-padding-end ion-padding-start"
+    ></ion-icon>
+    <ion-icon
+      name="send-outline"
+      slot="end"
+      class="ion-padding-end"
+      (click)="sendMessage()"
+    ></ion-icon>
+  </ion-toolbar>
+</ion-footer>

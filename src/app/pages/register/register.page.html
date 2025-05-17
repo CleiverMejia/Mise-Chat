@@ -1,0 +1,78 @@
+<ion-content [fullscreen]="true" class="ion-justify-content-center">
+  <ion-list [inset]="true">
+    <ion-item>
+      <ion-title>
+        <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+        Mise-chat - Register
+      </ion-title>
+    </ion-item>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <ion-item>
+        <ion-input
+          formControlName="name"
+          label="name"
+          type="text"
+          labelPlacement="floating"
+          placeholder="Jhon"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          formControlName="lastname"
+          label="lastname"
+          type="text"
+          labelPlacement="floating"
+          placeholder="Doe"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          formControlName="phone"
+          label="phone"
+          type="text"
+          labelPlacement="floating"
+          placeholder="1234567890"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          formControlName="email"
+          label="email"
+          type="email"
+          labelPlacement="floating"
+          placeholder="example@gmail.com"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          formControlName="password"
+          type="password"
+          label="password"
+          labelPlacement="floating"
+          placeholder="password"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          Do you already have an account?
+          <a [routerLink]="['/login']">Log in.</a>
+        </ion-label>
+      </ion-item>
+
+      <ion-button
+        expand="full"
+        class="ion-margin"
+        type="ngSubmit"
+        [disabled]="registerForm.invalid"
+      >
+        Sign Up
+      </ion-button>
+    </form>
+  </ion-list>
+</ion-content>

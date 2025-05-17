@@ -1,0 +1,48 @@
+<ion-content [fullscreen]="true" class="ion-justify-content-center">
+  <ion-list [inset]="true">
+    <ion-item>
+      <ion-title>
+        <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+        Mise-chat - Login
+      </ion-title>
+    </ion-item>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <ion-item>
+        <ion-input
+          formControlName="email"
+          label="email"
+          type="email"
+          labelPlacement="floating"
+          placeholder="example@gmail.com"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          formControlName="password"
+          label="password"
+          type="password"
+          labelPlacement="floating"
+          placeholder="password"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          Don't you have an account?
+          <a [routerLink]="['/register']">Sign up.</a>
+        </ion-label>
+      </ion-item>
+
+      <ion-button
+        expand="full"
+        class="ion-margin"
+        type="ngSubmit"
+        [disabled]="loginForm.invalid"
+      >
+        login
+      </ion-button>
+    </form>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,21 @@
+<ion-item [ngClass]="{ 'flex-end': isCurrentUser }">
+  <ion-avatar [slot]="isCurrentUser ? 'end' : 'start'" class="ion-no-margin">
+    <img
+      [src]="isCurrentUser ? sender.imageUrl : receiver.imageUrl"
+      alt="picture"
+    />
+  </ion-avatar>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{
+        isCurrentUser ? sender.name : receiver.name
+      }}</ion-card-title>
+      <ion-card-subtitle>
+        {{ date.toDate() | date : "MMM d, HH:mm" }}
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      {{ message }}
+    </ion-card-content>
+  </ion-card>
+</ion-item>

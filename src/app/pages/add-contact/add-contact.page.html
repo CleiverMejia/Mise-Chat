@@ -1,0 +1,44 @@
+<app-header>
+  <ion-icon
+    back
+    slot="start"
+    name="chevron-back"
+    class="ion-padding-start"
+    [routerLink]="['/home']"
+  ></ion-icon>
+</app-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list [inset]="true">
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+      <ion-item>
+        <ion-input
+          formControlName="nickname"
+          label="nickname"
+          type="text"
+          labelPlacement="floating"
+          placeholder="nickname"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          formControlName="phone"
+          label="phone"
+          type="text"
+          labelPlacement="floating"
+          placeholder="1234567890"
+        ></ion-input>
+      </ion-item>
+
+      <ion-button
+        expand="full"
+        class="ion-margin"
+        type="ngSubmit"
+        [disabled]="contactForm.invalid"
+      >
+        Add contact
+      </ion-button>
+    </form>
+  </ion-list>
+</ion-content>
