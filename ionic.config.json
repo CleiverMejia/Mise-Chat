@@ -1,0 +1,7 @@
+{
+  "name": "Mise-Chat",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
