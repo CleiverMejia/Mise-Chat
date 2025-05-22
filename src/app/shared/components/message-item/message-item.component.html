@@ -7,7 +7,7 @@
   </ion-avatar>
   <ion-card>
     <ion-card-header>
-      <ion-card-title>{{
+      <ion-card-title *ngIf="sender || receiver">{{
         isCurrentUser ? sender.name : receiver.name
       }}</ion-card-title>
       <ion-card-subtitle>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
-import { addDoc, collection, doc, getDoc, setDoc } from 'firebase/firestore';
-import Chat from '../../interfaces/chat.interface';
+import { addDoc, collection, doc, getDoc } from 'firebase/firestore';
+import { Chat } from '@interfaces/chat.interface';
 
 @Injectable({
   providedIn: 'root'

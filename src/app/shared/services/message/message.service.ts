@@ -3,17 +3,13 @@ import {
   addDoc,
   collection,
   collectionData,
-  doc,
   Firestore,
-  getDocs,
   orderBy,
   query,
-  setDoc,
 } from '@angular/fire/firestore';
-import { User } from 'firebase/auth';
 import { Observable } from 'rxjs';
-import Message from '../../interfaces/message.interface';
-import { user } from '@angular/fire/auth';
+import { map } from 'rxjs/operators';
+import { Message } from '@interfaces/message.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +31,19 @@ export class MessageService {
     const q = query(messagesRef, orderBy('date', 'asc'));
 
    return collectionData(q) as Observable<Message[]>
+  }
+
+  public getCountMessages(cid: string): Observable<number> {
+    const messagesRef = collection(
+      this.firestore,
+      this.CHATS,
+      cid,
+      this.MESSAGES
+    );
+
+   return collectionData(messagesRef).pipe(
+    map((messages) => messages.length)
+   );
   }
 
   public async sendMessage(cid: string, message: Message): Promise<void> {

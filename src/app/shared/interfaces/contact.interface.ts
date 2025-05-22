@@ -1,7 +1,5 @@
-export default interface Contact {
+export interface Contact {
   cid?: string;
-  uid?: string;
+  uid: string;
   nickname: string;
-  phone: string;
-  url?: string;
 }

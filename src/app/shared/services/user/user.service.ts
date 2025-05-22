@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { collection, collectionData, Firestore } from '@angular/fire/firestore';
 
 import { Observable } from 'rxjs';
-import User from '../../interfaces/user.interface';
+import { User } from '@interfaces/user.interface';
 import { doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
 
 @Injectable({
@@ -31,10 +31,28 @@ export class UserService {
     await setDoc(placeRef, user);
   }
 
+  public async getUserByPhone(phone: string): Promise<User> {
+    const q = query(
+      collection(this.firestore, this.USERS),
+      where('phone', '==', phone)
+    );
+
+    const querySnapshot = await getDocs(q);
+    const docs = querySnapshot.docs[0]
+
+    return { ...docs.data(), uid: docs.id } as unknown as User;
+  }
+
   public async setUserToken(id: string, token: string) {
     const placeRef = doc(this.firestore, this.USERS, id ?? '');
 
     return updateDoc(placeRef, {token: token});
+  }
+
+  public async updateUser(id: string, user: User) {
+    const placeRef = doc(this.firestore, this.USERS, id ?? '');
+
+    return updateDoc(placeRef, { ...user });
   }
 
   public async userExistByPhone(phone: string): Promise<boolean> {
@@ -51,17 +69,5 @@ export class UserService {
     }
 
     return false;
-  }
-
-  public async getUserByPhone(phone: string): Promise<User> {
-    const q = query(
-      collection(this.firestore, this.USERS),
-      where('phone', '==', phone)
-    );
-
-    const querySnapshot = await getDocs(q);
-    const docs = querySnapshot.docs[0]
-
-    return { ...docs.data(), uid: docs.id } as unknown as User;
   }
 }

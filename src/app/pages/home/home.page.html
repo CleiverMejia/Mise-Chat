@@ -17,7 +17,6 @@
     @for (contact of contacts; track $index) {
       <app-chat-item
         [cid]="contact.cid ?? ''"
-        [url]="contact.url ?? ''"
         [nickname]="contact.nickname"
       />
     }

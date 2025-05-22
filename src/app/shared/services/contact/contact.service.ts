@@ -4,8 +4,8 @@ import {
   collectionData,
   Firestore,
 } from '@angular/fire/firestore';
-import Contact from '../../interfaces/contact.interface';
-import { addDoc, doc, getDoc, setDoc } from 'firebase/firestore';
+import { Contact } from '@interfaces/contact.interface';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 
 @Injectable({

@@ -1,4 +1,4 @@
-export default interface User {
+export interface User {
   uid?: string,
   token?: string
   imageUrl: string,

@@ -1,4 +1,4 @@
-export default interface Chat {
+export interface Chat {
   id?: string;
   uid1: string;
   uid2: string;

@@ -8,6 +8,49 @@
   ></ion-icon>
 </app-header>
 
-<ion-content [fullscreen]="true">
-  
+<ion-content [fullscreen]="true" class="ion-justify-content-center">
+  <ion-list [inset]="true" *ngIf="currentUser">
+    <ion-item>
+      <ion-title slot="start"> Profile </ion-title>
+    </ion-item>
+
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+      <ion-item class="item-avatar">
+        <ion-avatar>
+          <img alt="Profile image" [src]="currentUser.imageUrl" />
+        </ion-avatar>
+      </ion-item>
+
+      <ion-item>
+        <ion-label class="ion-padding-end">Name:</ion-label>
+        <ion-input formControlName="name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label class="ion-padding-end">Lastname:</ion-label>
+        <ion-input formControlName="lastname"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label class="ion-padding-end"
+          >Phone: {{ currentUser.phone }}</ion-label
+        >
+      </ion-item>
+
+      <ion-button
+        expand="full"
+        class="ion-margin"
+        type="ngSubmit"
+        [disabled]="profileForm.invalid"
+      >
+        Save
+      </ion-button>
+    </form>
+  </ion-list>
+  <ion-toast
+    [isOpen]="isToastOpen"
+    [message]="messageUpdate"
+    [duration]="1000"
+    (didDismiss)="isToastOpen = false"
+  ></ion-toast>
 </ion-content>

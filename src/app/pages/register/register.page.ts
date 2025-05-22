@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { user } from '@angular/fire/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { last } from 'rxjs';
-import User from 'src/app/shared/interfaces/user.interface';
-import { AuthService } from 'src/app/shared/services/auth/auth.service';
-import { UserService } from 'src/app/shared/services/user/user.service';
+import { User } from '@interfaces/user.interface';
+import { AuthService } from '@services/auth/auth.service';
+import { SupabaseService } from '@services/supabase/supabase.service';
+import { UserService } from '@services/user/user.service';
 
 @Component({
   selector: 'app-register',
@@ -15,15 +14,17 @@ import { UserService } from 'src/app/shared/services/user/user.service';
 })
 export class RegisterPage implements OnInit {
   public registerForm: FormGroup;
+  public url: string = 'https://ionicframework.com/docs/img/demos/avatar.svg';
+  private imageFile: File | null = null;
 
   constructor(
     private form: FormBuilder,
     private authService: AuthService,
     private userService: UserService,
+    private supabaseService: SupabaseService,
     private router: Router
   ) {
     this.registerForm = this.form.group({
-      imageUrl: [''],
       name: ['', [Validators.required, Validators.minLength(3)]],
       lastname: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
@@ -34,10 +35,13 @@ export class RegisterPage implements OnInit {
 
   ngOnInit() {}
 
-  onSubmit() {
+  public async onSubmit() {
     if (this.registerForm.valid) {
-      const { imageUrl, name, lastname, email, password, phone } =
+      const { name, lastname, email, password, phone } =
         this.registerForm.value;
+
+      const imageUrl = await this.supabaseService.uploadFile(this.imageFile!);
+      console.log('Image URL:', imageUrl);
 
       this.authService
         .register(email, password)
@@ -48,7 +52,7 @@ export class RegisterPage implements OnInit {
               name,
               lastname,
               phone,
-            }
+            };
 
             this.userService.createUser(userCredential.user.uid, user);
             this.router.navigate(['/login']);
@@ -57,6 +61,16 @@ export class RegisterPage implements OnInit {
         .catch((error) => {
           console.error('Error registering user:', error);
         });
+    }
+  }
+
+  onImageSelected($event: Event) {
+    const file = ($event.target as HTMLInputElement).files?.[0];
+
+    if (file) {
+      this.url = URL.createObjectURL(file);
+      this.imageFile = file;
+      console.log(file);
     }
   }
 }

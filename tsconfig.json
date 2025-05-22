@@ -2,6 +2,12 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "paths": {
+      "@environments/*": ["src/environments/*"],
+      "@services/*": ["src/app/shared/services/*"],
+      "@interfaces/*": ["src/app/shared/interfaces/*"],
+      "@enums/*": ["src/app/shared/enums/*"],
+    },
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

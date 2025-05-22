@@ -4,6 +4,7 @@
       slot="start"
       name="chevron-back"
       class="ion-padding-start"
+      (click)="clearChat()"
       [routerLink]="['/home']"
     ></ion-icon>
 
@@ -18,7 +19,24 @@
       slot="end"
       name="ellipsis-vertical-outline"
       class="ion-padding-end"
+      id="config-menu"
     ></ion-icon>
+    <ion-popover trigger="config-menu" triggerAction="click">
+      <ng-template>
+        <ion-content>
+          <ion-list>
+            <ion-item button>
+              <ion-icon name="pencil-outline" class="ion-padding-end"></ion-icon>
+              Change nickname
+            </ion-item>
+            <ion-item button>
+              <ion-icon name="trash-outline" class="ion-padding-end"></ion-icon>
+              Delete chat
+            </ion-item>
+          </ion-list>
+        </ion-content>
+      </ng-template>
+    </ion-popover>
   </ion-toolbar>
 </ion-header>
 
@@ -36,56 +54,67 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
-    <ion-icon
-      name="add-outline"
-      slot="start"
-      id="file-menu"
-      class="ion-padding-start ion-padding-end"
-    ></ion-icon>
-    <ion-popover trigger="file-menu" triggerAction="click">
-      <ng-template>
-        <ion-content class="ion-padding">
-          <ion-grid>
-            <ion-row>
-              <ion-col size="6">
-                <ion-icon name="image-outline"></ion-icon>
-                <ion-label>Image</ion-label>
-              </ion-col>
-              <ion-col size="6">
-                <ion-icon name="videocam-outline"></ion-icon>
-                <ion-label>Video</ion-label>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col size="6">
-                <ion-icon name="document-text-outline"></ion-icon>
-                <ion-label>Document</ion-label>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-content>
-      </ng-template>
-    </ion-popover>
+  <form (ngSubmit)="sendMessage()">
+    <ion-toolbar>
+      <ion-icon
+        name="add-outline"
+        slot="start"
+        id="file-menu"
+        class="ion-padding-start ion-padding-end"
+      ></ion-icon>
+      <ion-popover trigger="file-menu" triggerAction="click">
+        <ng-template>
+          <ion-content class="ion-padding">
+            <ion-grid>
+              <ion-row>
+                <input type="file" accept="image/*" #imageInput hidden (change)="selectedFile($event)" />
+                <ion-col size="6" (click)="imageInput.click()">
+                  <ion-icon name="image-outline"></ion-icon>
+                  <ion-label>Image</ion-label>
+                </ion-col>
+                <ion-col size="6">
+                  <ion-icon name="videocam-outline"></ion-icon>
+                  <ion-label>Video</ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="6">
+                  <ion-icon name="document-text-outline"></ion-icon>
+                  <ion-label>Document</ion-label>
+                </ion-col>
+                <ion-col size="6">
+                  <ion-icon name="location-outline"></ion-icon>
+                  <ion-label>Location</ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
 
-    <ion-textarea
-      type="text"
-      placeholder="Type a message"
-      class=""
-      [(ngModel)]="content"
-    >
-    </ion-textarea>
+      <ion-textarea
+        type="text"
+        placeholder="Type a message"
+        class=""
+        [(ngModel)]="content"
+        name="message"
+      >
+      </ion-textarea>
 
-    <ion-icon
-      name="mic-outline"
-      slot="end"
-      class="ion-padding-end ion-padding-start"
-    ></ion-icon>
-    <ion-icon
-      name="send-outline"
-      slot="end"
-      class="ion-padding-end"
-      (click)="sendMessage()"
-    ></ion-icon>
-  </ion-toolbar>
+      <ion-icon
+        name="mic-outline"
+        slot="end"
+        class="ion-padding-end ion-padding-start"
+      ></ion-icon>
+
+      <ion-button type="ngSubmit" fill="clear" slot="end">
+        <ion-icon
+          name="send-outline"
+          slot="end"
+          class="ion-padding-end"
+          type="ngSubmit"
+        ></ion-icon>
+      </ion-button>
+    </ion-toolbar>
+  </form>
 </ion-footer>

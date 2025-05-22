@@ -1,10 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Timestamp } from 'firebase/firestore';
-import { StorageService } from '../../services/storage/storage.service';
-import Contact from '../../interfaces/contact.interface';
-import User from '../../interfaces/user.interface';
-import { ContactService } from '../../services/contact/contact.service';
-import { UserService } from '../../services/user/user.service';
+import { StorageService } from '@services/storage/storage.service';
+import { User } from '@interfaces/user.interface';
 
 @Component({
   selector: 'app-message-item',
@@ -26,7 +23,8 @@ export class MessageItemComponent implements OnInit {
 
   constructor(
     private storageService: StorageService,
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.setCurrentUser();
@@ -43,12 +41,12 @@ export class MessageItemComponent implements OnInit {
   private setSender(): void {
     const userSender = this.storageService.get('currentUser');
 
-    this.sender = JSON.parse(userSender)
+    if (userSender) this.sender = JSON.parse(userSender)
   }
 
   private setReceiver(): void {
     const userReceiver = this.storageService.get('userReceiver');
 
-    this.receiver = JSON.parse(userReceiver)
+    if (userReceiver) this.receiver = JSON.parse(userReceiver)
   }
 }

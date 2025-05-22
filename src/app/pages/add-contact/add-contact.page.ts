@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import Chat from 'src/app/shared/interfaces/chat.interface';
-import Contact from 'src/app/shared/interfaces/contact.interface';
-import User from 'src/app/shared/interfaces/user.interface';
-import { ChatService } from 'src/app/shared/services/chat/chat.service';
-import { ContactService } from 'src/app/shared/services/contact/contact.service';
-import { StorageService } from 'src/app/shared/services/storage/storage.service';
-import { UserService } from 'src/app/shared/services/user/user.service';
+import { User } from '@interfaces/user.interface';
+import { Chat } from '@interfaces/chat.interface';
+import { Contact } from '@interfaces/contact.interface';
+import { ContactService } from '@services/contact/contact.service';
+import { StorageService } from '@services/storage/storage.service';
+import { UserService } from '@services/user/user.service';
+import { ChatService } from '@services/chat/chat.service';
 
 @Component({
   selector: 'app-add-contact',
@@ -40,9 +40,6 @@ export class AddContactPage implements OnInit {
     const uid: string = this.storageService.get('accessToken');
 
     const user = await this.userService.getUserByPhone(phone);
-    const currentUser: User = JSON.parse(
-      this.storageService.get('currentUser')
-    );
 
     if (user) {
       const chat: Chat = {
@@ -53,13 +50,11 @@ export class AddContactPage implements OnInit {
       this.chatService.createChat(chat).then((newChat) => {
         const contact1: Contact = {
           nickname: nickname,
-          phone: phone,
-          uid: user.uid,
+          uid: user.uid ?? '',
         };
 
         const contact2: Contact = {
-          nickname: `${currentUser.name} ${currentUser.lastname}`,
-          phone: currentUser.phone,
+          nickname: 'Unknown',
           uid: uid,
         };
 

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import Contact from 'src/app/shared/interfaces/contact.interface';
-import User from 'src/app/shared/interfaces/user.interface';
-import { AuthService } from 'src/app/shared/services/auth/auth.service';
-import { ContactService } from 'src/app/shared/services/contact/contact.service';
-import { StorageService } from 'src/app/shared/services/storage/storage.service';
-import { UserService } from 'src/app/shared/services/user/user.service';
+import { Contact } from '@interfaces/contact.interface';
+import { User } from '@interfaces/user.interface';
+import { ContactService } from '@services/contact/contact.service';
+import { StorageService } from '@services/storage/storage.service';
+import { AuthService } from '@services/auth/auth.service';
+import { UserService } from '@services/user/user.service';
 
 @Component({
   selector: 'app-home',
@@ -47,6 +47,7 @@ export class HomePage implements OnInit {
   }
 
   public logout(): void {
+    this.storageService.clear();
     this.authService.logout();
   }
 }
