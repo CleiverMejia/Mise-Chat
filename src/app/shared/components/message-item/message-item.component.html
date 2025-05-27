@@ -14,8 +14,20 @@
         {{ date.toDate() | date : "MMM d, HH:mm" }}
       </ion-card-subtitle>
     </ion-card-header>
-    <ion-card-content>
-      {{ message }}
+    <ion-card-content [ngSwitch]="type">
+      <p *ngSwitchCase="typeMessage.TEXT">{{ message }}</p>
+      <img *ngSwitchCase="typeMessage.IMAGE" [src]="message" alt="image" />
+      <video
+        *ngSwitchCase="typeMessage.VIDEO"
+        [src]="message"
+        class="video-message"
+        controls
+      ></video>
+      <div *ngSwitchCase="typeMessage.FILE">
+        <a [href]="message" download class="ion-text-center"
+          ><ion-icon name="document-outline"></ion-icon>{{ getFileName() }}</a
+        >
+      </div>
     </ion-card-content>
   </ion-card>
 </ion-item>

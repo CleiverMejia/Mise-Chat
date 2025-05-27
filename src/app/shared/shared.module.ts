@@ -5,8 +5,9 @@ import { ChatItemComponent } from './components/chat-item/chat-item.component';
 import { RouterModule } from '@angular/router';
 import { MessageItemComponent } from './components/message-item/message-item.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FileCardComponent } from './components/file-card/file-card.component';
 
-const COMPONENTS = [MessageItemComponent, ChatItemComponent];
+const COMPONENTS = [MessageItemComponent, ChatItemComponent, FileCardComponent];
 
 const IMPORTS = [CommonModule, IonicModule, RouterModule, ReactiveFormsModule];
 

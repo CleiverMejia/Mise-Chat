@@ -7,6 +7,8 @@ import { Message } from '@interfaces/message.interface';
 import { MessageService } from '@services/message/message.service';
 import { StorageService } from '@services/storage/storage.service';
 import { SupabaseService } from '@services/supabase/supabase.service';
+import { IonAlertCustomEvent, OverlayEventDetail } from '@ionic/core';
+import { ContactService } from '@services/contact/contact.service';
 
 @Component({
   selector: 'app-chat',
@@ -21,12 +23,34 @@ export class ChatPage implements OnInit {
   chatId: string;
   content: string = '';
   typeMessage: TypeMessage = TypeMessage.TEXT;
+  typeMessageEnum = TypeMessage;
+  file: File | null = null;
+
+  public inputButtons = [
+    {
+      text: 'Cancel',
+      role: 'cancel'
+    },
+    {
+      text: 'Confirm',
+      role: 'confirm'
+    },
+  ];
+
+  public nicknameInputs = [
+    {
+      placeholder: 'Nickname',
+      name: 'nickname',
+      value: ''
+    },
+  ];
 
   constructor(
     private messageService: MessageService,
     private actRoute: ActivatedRoute,
     private storageService: StorageService,
     private supabaseService: SupabaseService,
+    private contactService: ContactService,
   ) {
     this.chatId = this.actRoute.snapshot.paramMap.get('chatId') as string;
   }
@@ -43,32 +67,57 @@ export class ChatPage implements OnInit {
   }
 
   public sendMessage() {
-    if (this.content) {
-      let Message: Message = {
-        uid: this.storageService.get('accessToken'),
-        content: this.content,
-        type: this.typeMessage,
-        date: Timestamp.now(),
-      };
+    if (this.content || this.file) {
+      this.supabaseService
+        .uploadFile(this.file!)
+        .then((respUrl: string) => {
+          this.content = respUrl;
+        })
+        .finally(() => {
+          let Message: Message = {
+            uid: this.storageService.get('accessToken'),
+            content: this.content,
+            type: this.typeMessage,
+            date: Timestamp.now(),
+          };
 
-      this.content = '';
+          this.content = '';
+          this.file = null;
+          this.typeMessage = TypeMessage.TEXT;
 
-      this.messageService.sendMessage(this.chatId, Message).then(() => {
-        this.scrollToBottom();
-      });
+          this.messageService.sendMessage(this.chatId, Message).then(() => {
+            this.scrollToBottom();
+          });
+        });
     }
   }
 
-  selectedFile($event: Event) {
-    const file = ($event.target as HTMLInputElement).files?.[0];
+  selectedFile($event: Event, type: TypeMessage) {
+    this.file = ($event.target as HTMLInputElement).files?.[0] ?? null;
+    this.typeMessage = type;
 
-    if (file) {
-      console.log(file);
+    if (this.file) {
+      console.log(this.file);
     }
   }
 
-  uploadFile($event: Event) {
-    
+  unselectFile() {
+    this.file = null;
+    this.typeMessage = TypeMessage.TEXT;
+  }
+
+  setNicknameResult($event: IonAlertCustomEvent<OverlayEventDetail<any>>) {
+    const nickname = $event.detail.data.values.nickname;
+    const confirm = $event.detail.role === 'confirm';
+
+    if(nickname && nickname.trim() !== '' && confirm) {
+      const userId = this.storageService.get('accessToken');
+
+      this.contactService.changeNickname(userId, this.chatId, nickname);
+
+      const { name, ...rest} = JSON.parse(this.storageService.get('userReceiver'));
+      this.storageService.set('userReceiver', JSON.stringify({ name: nickname, ...rest }));
+    }
   }
 
   private scrollToBottom() {

@@ -5,7 +5,7 @@ import {
   Firestore,
 } from '@angular/fire/firestore';
 import { Contact } from '@interfaces/contact.interface';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -38,5 +38,11 @@ export class ContactService {
     const placeRef = doc(this.firestore, this.USERS, userId, this.CONTACTS, chatId);
 
     await setDoc(placeRef, contact);
+  }
+
+  public async changeNickname(id: string, chatId: string, nickname: string) {
+    const placeRef = doc(this.firestore, this.USERS, id, this.CONTACTS, chatId);
+
+    return updateDoc(placeRef, { nickname: nickname });
   }
 }

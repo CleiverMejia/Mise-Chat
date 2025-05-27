@@ -41,7 +41,6 @@ export class RegisterPage implements OnInit {
         this.registerForm.value;
 
       const imageUrl = await this.supabaseService.uploadFile(this.imageFile!);
-      console.log('Image URL:', imageUrl);
 
       this.authService
         .register(email, password)

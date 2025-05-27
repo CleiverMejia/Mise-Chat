@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '@interfaces/user.interface';
 import { StorageService } from '@services/storage/storage.service';
+import { SupabaseService } from '@services/supabase/supabase.service';
 import { UserService } from '@services/user/user.service';
 
 @Component({
@@ -15,11 +16,14 @@ export class ProfilePage implements OnInit {
   public profileForm!: FormGroup;
   public messageUpdate!: string;
   public isToastOpen: boolean = false;
+  url!: string;
+  imageFile: File | null = null;
 
   constructor(
     private storageService: StorageService,
     private form: FormBuilder,
     private userService: UserService,
+    private supabaseService: SupabaseService,
   ) {}
 
   ngOnInit() {
@@ -28,6 +32,7 @@ export class ProfilePage implements OnInit {
 
   private loadUser() {
     this.currentUser = JSON.parse(this.storageService.get('currentUser'));
+    this.url = this.currentUser?.imageUrl ?? 'https://ionicframework.com/docs/img/demos/avatar.svg';
 
     this.profileForm = this.form.group({
       name: [this.currentUser?.name, Validators.required],
@@ -35,13 +40,24 @@ export class ProfilePage implements OnInit {
     });
   }
 
-  public onSubmit() {
+  public async onSubmit() {
     if (this.profileForm.valid) {
       const uid = this.storageService.get('accessToken');
       const { name, lastname } = this.profileForm.value;
 
+      if (this.imageFile) {
+        try {
+          this.url = await this.supabaseService.uploadFile(this.imageFile);
+        } catch (error) {
+          this.url = this.supabaseService.getPublicUrl(this.imageFile.name);
+
+          console.log(this.url);
+        };
+      }
+
       const user: User = {
         ...this.currentUser,
+        imageUrl: this.url,
         name,
         lastname,
       };
@@ -56,6 +72,15 @@ export class ProfilePage implements OnInit {
         this.isToastOpen = true;
         this.messageUpdate = 'Error updating profile';
       });
+    }
+  }
+
+  onImageSelected($event: Event) {
+    const file = ($event.target as HTMLInputElement).files?.[0];
+
+    if (file) {
+      this.url = URL.createObjectURL(file);
+      this.imageFile = file;
     }
   }
 }

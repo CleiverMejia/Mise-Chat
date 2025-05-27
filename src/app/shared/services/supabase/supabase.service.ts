@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { createClient } from '@supabase/supabase-js';
 
+const { v4: uuidv4 } = require('uuid');
+
 @Injectable({
   providedIn: 'root',
 })
@@ -17,7 +19,7 @@ export class SupabaseService {
 
   uploadFile(file: File): Promise<any> {
     return new Promise((resolve, reject) => {
-      const filePath = file.name;
+      const filePath = `${uuidv4()}_${file.name}`;
 
       this.supabase.storage
         .from(this.bucketName)

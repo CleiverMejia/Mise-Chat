@@ -16,8 +16,16 @@
 
     <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
       <ion-item class="item-avatar">
+        <input
+          type="file"
+          id="file"
+          (change)="onImageSelected($event)"
+          accept="image/*"
+          hidden
+          #imageInput
+        />
         <ion-avatar>
-          <img alt="Profile image" [src]="currentUser.imageUrl" />
+          <img alt="Profile image" [src]="url" (click)="imageInput.click()"/>
         </ion-avatar>
       </ion-item>
 
