@@ -3,6 +3,8 @@ import { Timestamp } from 'firebase/firestore';
 import { StorageService } from '@services/storage/storage.service';
 import { User } from '@interfaces/user.interface';
 import { TypeMessage } from '@enums/typeMessage.enum';
+import * as mapboxgl from 'mapbox-gl';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-message-item',
@@ -23,6 +25,21 @@ export class MessageItemComponent implements OnInit {
   sender!: User;
   receiver!: User;
 
+  private readonly MAPBOX_TOKEN = environment.mapboxToken;
+
+  public inputButtons = [
+    {
+      text: 'Cancel',
+      role: 'cancel',
+    },
+    {
+      text: 'Confirm',
+      role: 'confirm',
+    },
+  ];
+
+  map!: mapboxgl.Map;
+
   constructor(
     private storageService: StorageService,
   ) {
@@ -35,9 +52,9 @@ export class MessageItemComponent implements OnInit {
   }
 
   public setCurrentUser(): void {
-    const accessToken = this.storageService.get('accessToken');
+    const userToken = this.storageService.get('userToken');
 
-    this.isCurrentUser = this.uid === accessToken;
+    this.isCurrentUser = this.uid === userToken;
   }
 
   private setSender(): void {
@@ -52,7 +69,7 @@ export class MessageItemComponent implements OnInit {
     if (userReceiver) this.receiver = JSON.parse(userReceiver)
   }
 
-  getFileName() {
+  public getFileName() {
     const fileSplit = this.message.split('/');
     const file = fileSplit[fileSplit.length - 1].split('_');
     file.shift();
@@ -60,5 +77,22 @@ export class MessageItemComponent implements OnInit {
     const fileName = file?.join('');
 
     return fileName ? fileName : 'Unknown File';
+  }
+
+  public setLocation() {
+    const { latitude, longitude } = JSON.parse(this.message);
+
+    (mapboxgl as any).accessToken = this.MAPBOX_TOKEN;
+
+    this.map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [longitude, latitude],
+      zoom: 13,
+    });
+
+    const marker = new mapboxgl.Marker({ color: 'red' })
+      .setLngLat([longitude, latitude])
+      .addTo(this.map);
   }
 }

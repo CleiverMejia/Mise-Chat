@@ -14,20 +14,36 @@
         {{ date.toDate() | date : "MMM d, HH:mm" }}
       </ion-card-subtitle>
     </ion-card-header>
-    <ion-card-content [ngSwitch]="type">
-      <p *ngSwitchCase="typeMessage.TEXT">{{ message }}</p>
-      <img *ngSwitchCase="typeMessage.IMAGE" [src]="message" alt="image" />
-      <video
-        *ngSwitchCase="typeMessage.VIDEO"
-        [src]="message"
-        class="video-message"
-        controls
-      ></video>
-      <div *ngSwitchCase="typeMessage.FILE">
-        <a [href]="message" download class="ion-text-center"
-          ><ion-icon name="document-outline"></ion-icon>{{ getFileName() }}</a
-        >
-      </div>
+    <ion-card-content>
+      @switch (type) {
+        @case (typeMessage.TEXT) {
+          <p>{{ message }}</p>
+        }
+        @case (typeMessage.IMAGE) {
+          <img [src]="message" alt="image" />
+        }
+        @case (typeMessage.VIDEO) {
+          <video
+            [src]="message"
+            class="video-message"
+            controls
+          ></video>
+        }
+        @case (typeMessage.FILE) {
+          <a [href]="message" download>
+            <ion-icon name="document-outline"></ion-icon>{{ getFileName() }}
+          </a>
+        }
+        @case (typeMessage.AUDIO) {
+          <audio controls [src]="message" type="audio/mpeg">
+            Tu navegador no soporta el elemento de audio.
+          </audio>
+        }
+        @case (typeMessage.LOCATION) {
+          <a (click)="setLocation()">Watch location</a>
+          <div id="map" ></div>
+        }
+      }
     </ion-card-content>
   </ion-card>
 </ion-item>

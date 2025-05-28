@@ -9,15 +9,7 @@
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <ion-item class="item-avatar">
-        <input
-          type="file"
-          id="file"
-          (change)="onImageSelected($event)"
-          accept="image/*"
-          hidden
-          #imageInput
-        />
-        <ion-avatar (click)="imageInput.click()">
+        <ion-avatar (click)="takePicture()">
           <img alt="Profile image" [src]="url" />
         </ion-avatar>
       </ion-item>

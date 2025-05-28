@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Mise-Chat</string>
+    <string name="title_activity_main">Mise-Chat</string>
+    <string name="package_name">com.mise.misechat</string>
+    <string name="custom_url_scheme">com.mise.misechat</string>
+</resources>

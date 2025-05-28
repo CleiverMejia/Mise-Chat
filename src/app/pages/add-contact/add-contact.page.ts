@@ -17,6 +17,7 @@ import { ChatService } from '@services/chat/chat.service';
 })
 export class AddContactPage implements OnInit {
   contactForm: FormGroup;
+  isToastOpen: boolean = false;
 
   constructor(
     private form: FormBuilder,
@@ -37,35 +38,45 @@ export class AddContactPage implements OnInit {
   async onSubmit() {
     const { nickname, phone } = this.contactForm.value;
 
-    const uid: string = this.storageService.get('accessToken');
+    const uid: string = this.storageService.get('userToken');
 
-    const user = await this.userService.getUserByPhone(phone);
+    const existUser: boolean = await this.userService.userExistByPhone(phone);
 
-    if (user) {
-      const chat: Chat = {
-        uid1: uid,
-        uid2: user.uid ?? '',
-      };
+    this.isToastOpen = !existUser;
 
-      this.chatService.createChat(chat).then((newChat) => {
-        const contact1: Contact = {
-          nickname: nickname,
-          uid: user.uid ?? '',
+    if (existUser) {
+      const user = await this.userService.getUserByPhone(phone);
+
+      if (user) {
+        const chat: Chat = {
+          uid1: uid,
+          uid2: user.uid ?? '',
         };
 
-        const contact2: Contact = {
-          nickname: 'Unknown',
-          uid: uid,
-        };
+        this.chatService.createChat(chat).then((newChat) => {
+          const contact1: Contact = {
+            nickname: nickname,
+            uid: user.uid ?? '',
+          };
 
-        Promise.all([
-          this.contactService.addContact(uid, newChat.id, contact1),
-          this.contactService.addContact(user.uid ?? '', newChat.id, contact2),
-        ]).then((resp) => {
-          this.contactForm.reset();
-          this.router.navigate(['/home']);
+          const contact2: Contact = {
+            nickname: 'Unknown',
+            uid: uid,
+          };
+
+          Promise.all([
+            this.contactService.addContact(uid, newChat.id, contact1),
+            this.contactService.addContact(
+              user.uid ?? '',
+              newChat.id,
+              contact2
+            ),
+          ]).then(() => {
+            this.contactForm.reset();
+            this.router.navigate(['/home']);
+          });
         });
-      });
+      }
     }
   }
 }

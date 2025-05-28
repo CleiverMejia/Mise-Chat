@@ -39,7 +39,7 @@ export class ChatItemComponent implements OnInit {
   }
 
   public goToChat() {
-    const userId: string = this.storageService.get('accessToken');
+    const userId: string = this.storageService.get('userToken');
 
     this.contactService.getContactById(userId, this.cid).then((resp) => {
       const contact: Contact = resp.data() as Contact;
@@ -55,7 +55,7 @@ export class ChatItemComponent implements OnInit {
   }
 
   getProfileImage() {
-    const userId: string = this.storageService.get('accessToken');
+    const userId: string = this.storageService.get('userToken');
 
     this.contactService.getContactById(userId, this.cid).then((resp) => {
       const contact: Contact = resp.data() as Contact;

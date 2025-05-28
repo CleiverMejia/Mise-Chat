@@ -41,4 +41,10 @@
       </ion-button>
     </form>
   </ion-list>
+  <ion-toast
+    [isOpen]="isToastOpen"
+    message="user not found"
+    [duration]="1000"
+    (didDismiss)="isToastOpen = false"
+  ></ion-toast>
 </ion-content>

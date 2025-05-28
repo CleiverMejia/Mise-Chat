@@ -16,6 +16,15 @@ export const environment = {
   supabaseUrl: 'https://xobvxnhyohlmouvcfvkb.supabase.co',
   supabaseKey:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhvYnZ4bmh5b2hsbW91dmNmdmtiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4NjYxNTksImV4cCI6MjA2MzQ0MjE1OX0.RsHahqP4BDbicS7ec142wB-6Frxy1vd5hW6EtxmILw0',
+  credentials: {
+    email: 'cleiver.mejiarodriguez2@unicolombo.edu.co',
+    password: '12073015',
+  },
+  urlToken: 'https://ravishing-courtesy-production.up.railway.app/user/login',
+  urlNotification:
+    'https://ravishing-courtesy-production.up.railway.app/notifications',
+  mapboxToken:
+    'pk.eyJ1IjoiY2xlaXZlcm1lamlhIiwiYSI6ImNtYjc4YWNucjAxdmkybG9pcXl3bGx4dHYifQ.cD2CIEQbyn_rjVLO3Ysg7w',
 };
 
 /*

@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { FilePicker } from '@capawesome/capacitor-file-picker';
 import { User } from '@interfaces/user.interface';
 import { AuthService } from '@services/auth/auth.service';
 import { SupabaseService } from '@services/supabase/supabase.service';
 import { UserService } from '@services/user/user.service';
+
+const { v4: uuidv4 } = require('uuid');
 
 @Component({
   selector: 'app-register',
@@ -63,13 +67,19 @@ export class RegisterPage implements OnInit {
     }
   }
 
-  onImageSelected($event: Event) {
-    const file = ($event.target as HTMLInputElement).files?.[0];
+  public async takePicture() {
+    const photo = await Camera.getPhoto({
+      resultType: CameraResultType.Uri,
+      source: CameraSource.Prompt,
+      quality: 90,
+    });
 
-    if (file) {
-      this.url = URL.createObjectURL(file);
-      this.imageFile = file;
-      console.log(file);
+    const response = await fetch(photo.webPath!);
+    const blob = await response.blob();
+
+    if (blob) {
+      this.imageFile = new File([blob!], uuidv4());
+      this.url = URL.createObjectURL(this.imageFile)
     }
   }
 }

@@ -13,7 +13,12 @@
       Chat
     </ion-title>
 
-    <ion-icon slot="end" name="call-outline" class="ion-padding-end"></ion-icon>
+    <ion-icon
+      slot="end"
+      name="call-outline"
+      class="ion-padding-end"
+      (click)="callUser()"
+    ></ion-icon>
 
     <ion-icon
       slot="end"
@@ -85,42 +90,21 @@
           <ion-content class="ion-padding">
             <ion-grid>
               <ion-row>
-                <input
-                  type="file"
-                  accept="image/*"
-                  #imageInput
-                  hidden
-                  (change)="selectedFile($event, typeMessageEnum.IMAGE)"
-                />
-                <ion-col size="6" (click)="imageInput.click()">
+                <ion-col size="6" (click)="takePicture()">
                   <ion-icon name="image-outline"></ion-icon>
                   <ion-label>Image</ion-label>
                 </ion-col>
-                <input
-                  type="file"
-                  accept="video/*"
-                  #videoInput
-                  hidden
-                  (change)="selectedFile($event, typeMessageEnum.VIDEO)"
-                />
-                <ion-col size="6" (click)="videoInput.click()">
+                <ion-col size="6" (click)="pickVideo()">
                   <ion-icon name="videocam-outline"></ion-icon>
                   <ion-label>Video</ion-label>
                 </ion-col>
               </ion-row>
               <ion-row>
-                <input
-                  type="file"
-                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.odt"
-                  #documentInput
-                  hidden
-                  (change)="selectedFile($event, typeMessageEnum.FILE)"
-                />
-                <ion-col size="6" (click)="documentInput.click()">
+                <ion-col size="6" (click)="pickFile()">
                   <ion-icon name="document-text-outline"></ion-icon>
                   <ion-label>Document</ion-label>
                 </ion-col>
-                <ion-col size="6">
+                <ion-col size="6" (click)="getLocation()">
                   <ion-icon name="location-outline"></ion-icon>
                   <ion-label>Location</ion-label>
                 </ion-col>
@@ -143,6 +127,16 @@
         name="mic-outline"
         slot="end"
         class="ion-padding-end ion-padding-start"
+        *ngIf="!recording"
+        (click)="startRecording()"
+      ></ion-icon>
+
+      <ion-icon
+        name="stop-circle-outline"
+        slot="end"
+        class="ion-padding-end ion-padding-start"
+        *ngIf="recording"
+        (click)="stopRecording()"
       ></ion-icon>
 
       <ion-button type="ngSubmit" fill="clear" slot="end">

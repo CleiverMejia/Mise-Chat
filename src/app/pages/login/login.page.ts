@@ -35,7 +35,7 @@ export class LoginPage implements OnInit {
         const userCredential = await this.authService.login(email, password);
 
         if (userCredential.user) {
-          this.storageSevice.set('accessToken', userCredential.user.uid);
+          this.storageSevice.set('userToken', userCredential.user.uid);
           this.router.navigate(['/home']);
         }
       } catch (error) {

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "88656292116",
+    "project_id": "mise-chat",
+    "storage_bucket": "mise-chat.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88656292116:android:dc64ca6f2d2fc13af23a01",
+        "android_client_info": {
+          "package_name": "com.mise.misechat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUsQIFy1A2cOD5F-jhiYGNKadp6yYv3ZA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

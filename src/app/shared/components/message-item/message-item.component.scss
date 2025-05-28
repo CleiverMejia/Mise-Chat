@@ -1,11 +1,19 @@
-.flex-end {
-  justify-self: flex-end;
-}
-
 ion-item {
   max-width: 70%;
 }
 
+.flex-end {
+  justify-self: flex-end;
+}
+
 .video-message {
   max-width: 100%
+}
+
+#map {
+  max-width: 100%;
+  max-height: 20rem;
+
+  width: 500px;
+  height: 500px;
 }

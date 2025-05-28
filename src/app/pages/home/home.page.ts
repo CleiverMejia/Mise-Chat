@@ -5,6 +5,7 @@ import { ContactService } from '@services/contact/contact.service';
 import { StorageService } from '@services/storage/storage.service';
 import { AuthService } from '@services/auth/auth.service';
 import { UserService } from '@services/user/user.service';
+import { FcmService } from '@services/fcm/fcm.service';
 
 @Component({
   selector: 'app-home',
@@ -20,8 +21,13 @@ export class HomePage implements OnInit {
     private userService: UserService,
     private authService: AuthService,
     private storageService: StorageService,
-    private contactService: ContactService
+    private contactService: ContactService,
+    private fcmService: FcmService,
   ) {}
+
+  ionViewWillEnter() {
+    this.fcmService.initPush();
+  }
 
   ngOnInit() {
     this.getCurrentUser();
@@ -29,7 +35,7 @@ export class HomePage implements OnInit {
   }
 
   private setContacts(): void {
-    const userId = this.storageService.get('accessToken');
+    const userId = this.storageService.get('userToken');
 
     this.contactService.getContacts(userId).subscribe((contacts) => {
       this.contacts = contacts;
@@ -37,7 +43,7 @@ export class HomePage implements OnInit {
   }
 
   getCurrentUser() {
-    const userId = this.storageService.get('accessToken');
+    const userId = this.storageService.get('userToken');
 
     this.userService.getUser(userId).then((user) => {
       this.currentUser = user.data() as User
